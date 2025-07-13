@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Learn Next.js basics",
+    "description": "Understand routing, pages, and components",
+    "completed": false
+  },
+  {
+    "id": "2",
+    "title": "Create todo-list layout",
+    "description": "Build form and display list on main page",
+    "completed": false
+  },
+  {
+    "id": "3",
+    "title": "Set up JSON file as database",
+    "description": "Use fs module to read and write data",
+    "completed": true
+  }
+]
