@@ -1,10 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import { getTodos } from '@/lib/todos';
+
+// figure out routes????
 
 export async function GET() {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'todos.json');
-  const fileData = fs.readFileSync(filePath, 'utf8');
-  const todos = JSON.parse(fileData);
+  const todos = getTodos();
 
   return new Response(JSON.stringify(todos), {
     headers: { 'Content-Type': 'application/json' }

@@ -1,24 +1,10 @@
-import TodoForm from "@/components/TodoForm";
-import TodoItem from "@/components/TodoItem";
-
-import { useEffect, useState } from "react";
+import react from "react"
+import TodoList from "@/components/TodoList"
 
 const Home = () => {
-  const [todos, setTodos] = useState([])
-
-  useEffect(() => {
-    fetch('api/todos')
-      .then(response => response.json())
-      .then(data = setTodos(data))
-  }, [])
-
   return (
     <div>
-      <h1>next.js Todo List :DD</h1>
-      <TodoForm />
-      {todos.map(todo => {
-        <TodoItem key={todo.key} todo={todo} />
-      })}
+      <TodoList />
     </div>
   )
 }
