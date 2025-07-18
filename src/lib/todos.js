@@ -7,3 +7,9 @@ export function getTodos() {
   const file = fs.readFileSync(filePath, 'utf8');
   return JSON.parse(file);
 }
+
+export function saveTodos(updatedTodos) {
+  // open file, append maybe. then save it
+
+  return null;
+}
