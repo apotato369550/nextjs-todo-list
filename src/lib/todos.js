@@ -10,6 +10,12 @@ export function getTodos() {
 
 export function saveTodos(updatedTodos) {
   // open file, append maybe. then save it
-
-  return null;
+  try {
+    const data = JSON.stringify(updatedTodos, null, 2);
+    fs.writeFileSync(filePath, data, 'utf8');
+    return true;
+  } catch (error) {
+    console.log("Failed to save todos: ", error);
+    return false
+  }
 }

@@ -16,5 +16,11 @@
     "title": "Set up JSON file as database",
     "description": "Use fs module to read and write data",
     "completed": true
+  },
+  {
+    "id": "1752905668854",
+    "title": "Learn how to make POST requests",
+    "description": "This is how to make a post request",
+    "completed": false
   }
 ]
