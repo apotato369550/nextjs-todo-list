@@ -3,24 +3,28 @@
     "id": "1",
     "title": "Learn Next.js basics",
     "description": "Understand routing, pages, and components",
-    "completed": false
+    "completed": false,
+    "deleted": false
   },
   {
     "id": "2",
     "title": "Create todo-list layout",
     "description": "Build form and display list on main page",
-    "completed": false
+    "completed": false,
+    "deleted": false
   },
   {
     "id": "3",
     "title": "Set up JSON file as database",
     "description": "Use fs module to read and write data",
-    "completed": true
+    "completed": true,
+    "deleted": false
   },
   {
     "id": "1752905668854",
     "title": "Learn how to make POST requests",
     "description": "This is how to make a post request",
-    "completed": false
+    "completed": false,
+    "deleted": false
   }
 ]

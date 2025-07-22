@@ -1,10 +1,12 @@
 import React from 'react'
+import Link from 'next/link'
 
-const TodoItem = ({ todo }) => {
+const TodoItem = ({ todo, deleteTask }) => {
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">{todo.title}</h1>
-      <p className="text-base text-gray-600">{todo.description}</p>
+      <h1>{todo.title}</h1>
+      <p>{todo.description}</p>
+      <button onClick={() => deleteTask(todo.id)}>X</button>
     </div>
   )
 }

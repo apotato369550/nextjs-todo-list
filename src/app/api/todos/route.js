@@ -21,7 +21,8 @@ export async function POST(request) {
     id: Date.now().toString(),
     title: body.title,
     description: body.description,
-    completed: false
+    completed: false,
+    deleted: false
   };
 
   // update todo with ellipsis and assign to variable
