@@ -5,8 +5,10 @@ const TodoItem = ({ todo, deleteTask }) => {
   return (
     <div>
       <h1>{todo.title}</h1>
-      <p>{todo.description}</p>
       <button onClick={() => deleteTask(todo.id)}>X</button>
+      <Link href={"/todos/" + todo.id}>
+        <button>View Todo</button>
+      </Link>
     </div>
   )
 }
