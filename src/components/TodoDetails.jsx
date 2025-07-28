@@ -38,14 +38,20 @@ const TodoDetails = ({ id }) => {
   }, [])
 
   return (
-    <div>
-      <h1>{todo.title}</h1>
-      <p>{todo.description}</p>
-      <button onClick={() => deleteTask(todo.id)}>X</button>
-      <button onClick={() => completeTask(todo.id)}>Complete Task</button>
-      <Link href={"../"}>
-        <button>Go back to main page</button>
-      </Link>
+    <div className='min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8'>
+      <div className='bg-white shadow-md rounded-lg p-6 w-full max-w-xl space-y-4'>
+        <h1 className='text-2xl font-bold text-gray-800'>{todo.title}</h1>
+        <p className='text-gray-700'>{todo.description}</p>
+
+        <div className='flex justify-between gap-4'>
+          <button className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition' onClick={() => deleteTask(todo.id)}>X</button>
+
+          <button className='bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition' onClick={() => completeTask(todo.id)}>Complete Task</button>
+        </div>
+        <Link href={"../"}>
+          <button>Go back to main page</button>
+        </Link>
+      </div>
     </div>
   )
 }
