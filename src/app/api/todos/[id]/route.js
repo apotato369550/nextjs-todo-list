@@ -2,7 +2,7 @@ import { getTodos, saveTodos } from "@/lib/todos";
 
 export async function GET(_, { params }) {
     const todos = getTodos();
-    const todoId = params.id;
+    const todoId = String(params.id);
     // find todo using filtering
     const todo = todos.find(t => t.id === todoId);
 
@@ -19,38 +19,6 @@ export async function GET(_, { params }) {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         }
-    );
-}
-
-export async function DELETE(_, { params }) {
-    const todos = getTodos();
-    const todoId = params.id;
-    // find todo using loops/filtering
-    const filtered = todos.filter(t => t.id !== todoId);
-
-    // check if the filtered todos length == the current todos length
-    if (filtered.length === todos.length) {
-        // if they're equal, todo does not exist, return 404
-        return new Response(
-            { error: "Todo not found..." },
-            { status: 404 }
-        );
-    }
-
-    // save the filtered todos
-    const success = saveTodos(filtered);
-    if (!success) {
-        // if failed to save, failed to delete, return 500
-        return new Response(
-            { error: "Failed to delete todo..." },
-            { status: 500 }
-        );
-
-    } 
-    // otherwise, all is well. return null object + status 204
-    return new Response(
-        null,
-        { status: 204 }
     );
 }
 

@@ -3,16 +3,30 @@ import Link from 'next/link'
 
 const TodoItem = ({ todo, completeTask, deleteTask }) => {
   return (
-    <div className='bg-white shadow p-4 rounded flex justify-between items-center'>
-      <p className='text-lg font-medium'>{todo.title}</p>
+    <div className='bg-white shadow p-4 rounded flex justify-between items-center w-full max-w-4xl mx-auto my-2'>
+      <div className='flex-1'>
+        <p className='text-lg font-medium'>{todo.title}</p>
+      </div>
 
-      <div>
-        <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-4' onClick={() => deleteTask(todo.id)}>Complete Task</button>
+      <div className='flex space-x-3'>
+        <button 
+          className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+          onClick={() => deleteTask(todo.id)}
+        >
+          Complete Task
+        </button>
 
-        <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mx-4' onClick={() => deleteTask(todo.id)}>X</button>
+        <button 
+          className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+          onClick={() => deleteTask(todo.id)}
+        >
+          X
+        </button>
 
         <Link href={"/todos/" + todo.id}>
-          <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-4'>View Todo</button>
+          <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+            View Todo
+          </button>
         </Link>
       </div>
     </div>

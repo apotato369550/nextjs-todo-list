@@ -24,6 +24,7 @@ const TodoList = () => {
 
     function completeTask(id) {
         console.log("completing task" + id);
+        axios.put("/api/todos" + id);
         return;
     }
 
