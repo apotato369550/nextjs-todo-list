@@ -31,7 +31,8 @@ export async function PUT(request, { params }) {
     const todoIndex = todos.findIndex(t => t.id === params.id);
 
     // if index == -1, return a new response object 404 todo not found
-    if (index === -1) {
+    // fixed todoindex bug (used index instead of todoIndex)
+    if (todoIndex === -1) {
         return new Response(
             { error: "Todo not found..." },
             { status: 404 }

@@ -3,7 +3,7 @@
     "id": "1",
     "title": "Learn Next.js basics",
     "description": "Understand routing, pages, and components",
-    "completed": false,
+    "completed": true,
     "deleted": false
   },
   {

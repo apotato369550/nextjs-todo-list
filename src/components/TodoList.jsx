@@ -24,9 +24,17 @@ const TodoList = () => {
 
     function completeTask(id) {
         console.log("completing task" + id);
-        axios.put("/api/todos" + id);
+        axios.put(`/api/todos/${id}`, {
+            completed: true,
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error(error);
+        })
         return;
     }
+
+    // create "uncomplete" function
 
     function deleteTask(id) {
         console.log("Deleting task: " + id);
@@ -56,7 +64,7 @@ const TodoList = () => {
                 {todos.map(todo => {
                     console.log(todo);
                     if (!todo.deleted) {
-                        return <TodoItem key={todo.key} todo={todo} completeTask={completeTask} deleteTask={deleteTask}/>
+                        return <TodoItem key={todo.id} todo={todo} completeTask={completeTask} deleteTask={deleteTask}/>
                     }
                 })}
             </div>

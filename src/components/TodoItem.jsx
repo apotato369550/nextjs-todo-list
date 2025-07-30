@@ -11,7 +11,7 @@ const TodoItem = ({ todo, completeTask, deleteTask }) => {
       <div className='flex space-x-3'>
         <button 
           className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-          onClick={() => deleteTask(todo.id)}
+          onClick={() => completeTask(todo.id)}
         >
           Complete Task
         </button>
