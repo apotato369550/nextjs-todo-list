@@ -17,7 +17,7 @@
     "id": "3",
     "title": "Set up JSON file as database",
     "description": "Use fs module to read and write data",
-    "completed": true,
+    "completed": false,
     "deleted": false
   },
   {

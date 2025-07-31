@@ -14,7 +14,7 @@ const TodoList = () => {
         console.log("Getting/updating tasks");
         axios.get('/api/todos')
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 setTodos(response.data);
             })
             .catch((error) => {
@@ -28,23 +28,54 @@ const TodoList = () => {
             completed: true,
         }).then(response => {
             console.log(response.data);
+            setTodos([...todos, response.data]);
         }).catch(error => {
             console.error(error);
         })
-        return;
     }
 
     // create "uncomplete" function
+    function uncompleteTask(id) {
+        console.log("uncompleting task" + id);
+        axios.put(`/api/todos/${id}`, {
+            completed: false,
+        }).then(response => {
+            getTasks();
+            console.log(response.data);
+            setTodos([...todos, response.data]);
+        }).catch(error => {
+            console.error(error);
+        })
+    }
 
     function deleteTask(id) {
         console.log("Deleting task: " + id);
-        return;
+        axios.put(`/api/todos/${id}`, {
+            deleted: true,
+        }).then(response => {
+            getTasks();
+            console.log(response.data);
+            setTodos([...todos, response.data]);
+        }).catch(error => {
+            console.error(error);
+        })
     }
+
+    // test if the thingy works
 
     function createTask() {
         console.log("Creating task: ");
         console.log(title);
         console.log(description);
+        axios.post(`api/todos`, {
+            title: title,
+            description: description
+        }).then(response => {
+            getTasks();
+            console.log(response.data);
+        }).catch(error => {
+            console.error(error);
+        })
         return;
     }
 
@@ -64,7 +95,7 @@ const TodoList = () => {
                 {todos.map(todo => {
                     console.log(todo);
                     if (!todo.deleted) {
-                        return <TodoItem key={todo.id} todo={todo} completeTask={completeTask} deleteTask={deleteTask}/>
+                        return <TodoItem key={todo.id} todo={todo} completeTask={completeTask} uncompleteTask={uncompleteTask} deleteTask={deleteTask}/>
                     }
                 })}
             </div>
