@@ -27,8 +27,8 @@ const TodoList = () => {
         axios.put(`/api/todos/${id}`, {
             completed: true,
         }).then(response => {
+            getTasks();
             console.log(response.data);
-            setTodos([...todos, response.data]);
         }).catch(error => {
             console.error(error);
         })
@@ -42,7 +42,6 @@ const TodoList = () => {
         }).then(response => {
             getTasks();
             console.log(response.data);
-            setTodos([...todos, response.data]);
         }).catch(error => {
             console.error(error);
         })
@@ -67,7 +66,7 @@ const TodoList = () => {
         console.log("Creating task: ");
         console.log(title);
         console.log(description);
-        axios.post(`api/todos`, {
+        axios.post(`/api/todos`, {
             title: title,
             description: description
         }).then(response => {

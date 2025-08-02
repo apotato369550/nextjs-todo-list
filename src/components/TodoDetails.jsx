@@ -19,14 +19,43 @@ const TodoDetails = ({ id }) => {
     }
   }
 
-  function deleteTask(id) {
-    return;
-  }
-
   function completeTask(id) {
-    return;
+    console.log("completing task" + id);
+    axios.put(`/api/todos/${id}`, {
+      completed: true,
+    }).then(response => {
+      getTasks();
+      console.log(response.data);
+    }).catch(error => {
+      console.error(error);
+    })
   }
 
+  // create "uncomplete" function
+  function uncompleteTask(id) {
+    console.log("uncompleting task" + id);
+    axios.put(`/api/todos/${id}`, {
+      completed: false,
+    }).then(response => {
+      getTasks();
+      console.log(response.data);
+    }).catch(error => {
+      console.error(error);
+    })
+  }
+
+  function deleteTask(id) {
+    console.log("Deleting task: " + id);
+    axios.put(`/api/todos/${id}`, {
+      deleted: true,
+    }).then(response => {
+      getTasks();
+      console.log(response.data);
+      setTodos([...todos, response.data]);
+    }).catch(error => {
+      console.error(error);
+    })
+  }
   useEffect(() => {
     getTask();
   }, [])
@@ -38,15 +67,26 @@ const TodoDetails = ({ id }) => {
         <p className='text-gray-700 text-lg whitespace-pre-wrap'>{todo.description}</p>
 
         <div className='flex justify-between items-center gap-6'>
-          <button className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors font-medium' 
+          <button className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors font-medium'
             onClick={() => deleteTask(todo.id)}>
             Delete
           </button>
 
-          <button className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors font-medium' 
-            onClick={() => completeTask(todo.id)}>
-            Complete Task
-          </button>
+          {todo.completed ? (
+            <button
+              className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
+              onClick={() => uncompleteTask(todo.id)}
+            >
+              Undo
+            </button>
+          ) : (
+            <button
+              className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+              onClick={() => completeTask(todo.id)}
+            >
+              Complete Task
+            </button>
+          )}
         </div>
 
         <Link href={"../"} className="block">

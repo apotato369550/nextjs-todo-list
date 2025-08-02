@@ -7,13 +7,13 @@ const TodoForm = ({ setTitle, setDescription, createTask }) => {
         <input 
           type="text" 
           placeholder='Enter task here...' 
-          onChange={setTitle} 
+          onChange={e => setTitle(e.target.value)} 
           className="flex-grow border-2 border-gray-300 rounded-md px-3 py-2"
         />
         <input 
           type="text" 
           placeholder='Enter task description here' 
-          onChange={setDescription}
+          onChange={e => setDescription(e.target.value)}
           className="flex-grow border-2 border-gray-300 rounded-md px-3 py-2"
         />
         <button 
