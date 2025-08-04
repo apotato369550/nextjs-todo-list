@@ -3,9 +3,12 @@ import TodoDetails from '@/components/TodoDetails'
 
 const TodoPage = async ({ params }) => {
 
+  // fix: await params before getting its props
+  const { id } = await params;
+
   return (
     <div>
-        <TodoDetails id={ params.id }/>
+        <TodoDetails id={ id }/>
     </div>
   )
 }
