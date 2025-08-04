@@ -2,13 +2,13 @@ import { getTodos, saveTodos } from "@/lib/todos";
 
 export async function GET(_, { params }) {
     const todos = getTodos();
-    const todoId = String(params.id);
+    const todoId = String(params?.id);
     // find todo using filtering
     const todo = todos.find(t => t.id === todoId);
 
     // if todo not found, return a bad response object 404
     if (!todo) {
-        return new Response({ error: "Todo not found..." }, { status: 404 })
+        return new Response(JSON.stringify({ error: "Todo not found..." }), { status: 404 })
     }
 
 
@@ -28,7 +28,7 @@ export async function PUT(request, { params }) {
     // get todos using getTodos()
     const todos = getTodos();
     // get index using findIndex with condition
-    const todoIndex = todos.findIndex(t => t.id === params.id);
+    const todoIndex = todos.findIndex(t => t.id === params?.id);
 
     // if index == -1, return a new response object 404 todo not found
     // fixed todoindex bug (used index instead of todoIndex)

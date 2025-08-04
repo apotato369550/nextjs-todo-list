@@ -11,14 +11,14 @@
     "title": "Create todo-list layout",
     "description": "Build form and display list on main page",
     "completed": false,
-    "deleted": false
+    "deleted": true
   },
   {
     "id": "3",
     "title": "Set up JSON file as database",
     "description": "Use fs module to read and write data",
     "completed": false,
-    "deleted": false
+    "deleted": true
   },
   {
     "id": "1752905668854",
@@ -33,5 +33,12 @@
     "description": "fasdfasd",
     "completed": false,
     "deleted": true
+  },
+  {
+    "id": "1754180688641",
+    "title": "Hello!",
+    "description": "this works now:DDD",
+    "completed": true,
+    "deleted": false
   }
 ]

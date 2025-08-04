@@ -1,7 +1,7 @@
 import React from 'react'
 import TodoDetails from '@/components/TodoDetails'
 
-const TodoPage = ({ params }) => {
+const TodoPage = async ({ params }) => {
 
   return (
     <div>

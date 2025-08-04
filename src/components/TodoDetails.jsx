@@ -4,10 +4,11 @@ import React from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import TodoList from './TodoList'
+import { useRouter } from 'next/navigation'
 
 const TodoDetails = ({ id }) => {
   const [todo, setTodo] = useState({})
+  const router = useRouter();
 
   async function getTask() {
     try {
@@ -24,8 +25,8 @@ const TodoDetails = ({ id }) => {
     axios.put(`/api/todos/${id}`, {
       completed: true,
     }).then(response => {
-      getTasks();
       console.log(response.data);
+      getTask();
     }).catch(error => {
       console.error(error);
     })
@@ -37,8 +38,8 @@ const TodoDetails = ({ id }) => {
     axios.put(`/api/todos/${id}`, {
       completed: false,
     }).then(response => {
-      getTasks();
       console.log(response.data);
+      getTask();
     }).catch(error => {
       console.error(error);
     })
@@ -49,9 +50,8 @@ const TodoDetails = ({ id }) => {
     axios.put(`/api/todos/${id}`, {
       deleted: true,
     }).then(response => {
-      getTasks();
       console.log(response.data);
-      setTodos([...todos, response.data]);
+      router.push("/");
     }).catch(error => {
       console.error(error);
     })
