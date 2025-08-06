@@ -1,20 +1,47 @@
-import { getTodos, saveTodos } from '@/lib/todos';
+import { supabase } from '@/utils/supabaseClient';
+import { getTodos as getJsonTodos, saveTodos as saveJsonTodos } from '@/lib/todos';
 
 // figure out routes????
 
 export async function GET() {
-  const todos = getTodos();
+  try {
+    const { data, error } = await supabase
+      .from('supabase-todo-list')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      return new Response(
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-type': 'application/json'
+          }
+        }
+      );
+  } catch (error) {
+    // continue here
+    // actually, i think it's advisable to speedrun this section ngl
+    // learning deeply aint that helpful :VV
+  }
+
+  /*
+  const todos = getJsonTodos();
 
   return new Response(JSON.stringify(todos), {
     headers: { 'Content-Type': 'application/json' }
   });
+  */
 }
 
 export async function POST(request) {
   const body = await request.json();
 
   // call get todos function
-  const todos = getTodos();
+  const todos = getJsonTodos();
 
   // create new todo object
   const newTodo = {
@@ -29,7 +56,7 @@ export async function POST(request) {
   const updatedTodos = [...todos, newTodo];
 
   // call saveTodo function (to be made)
-  if (saveTodos(updatedTodos)) {
+  if (saveJsonTodos(updatedTodos)) {
     return new Response(JSON.stringify(newTodo), {
       status: 200,
       headers: {
