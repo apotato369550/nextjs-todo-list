@@ -1,6 +1,11 @@
-import { getTodos, saveTodos } from "@/lib/todos";
+// import { getTodos, saveTodos } from "@/lib/todos";
+import { getTodos as getJsonTodos, saveTodos as saveJsonTodos } from '@/lib/todos';
+import { supabase } from '@/utils/supabaseClient'
 
 export async function GET(_, { params }) {
+    // continue with this
+    // logic: try -> db, catch -> json fallback
+    // synchronize after put and post.
     const todos = getTodos();
     const todoId = String(params?.id);
     // find todo using filtering
@@ -11,15 +16,28 @@ export async function GET(_, { params }) {
         return new Response(JSON.stringify({ error: "Todo not found..." }), { status: 404 })
     }
 
+    try {
+        const { data, error } = await supabase
+        .from('supabase-todo-list')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    // otherwise, return 200
-    return new Response(
-        JSON.stringify(todo),
-        {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
+        if (error) {
+            throw error;
         }
-    );
+
+        return new Response(
+            JSON.stringify(data),
+            { headers: { 'Content-type': 'application/json'  } }
+        );
+    } catch (error) {
+        console.warn("Supabase failed. Using JSON fallback.");
+        const data = getJsonTodos();
+        return new Response(
+        JSON.stringify(data),
+        { headers: { 'Content-type': 'application/json'  } }
+        )
+    }
 }
 
 export async function PUT(request, { params }) {

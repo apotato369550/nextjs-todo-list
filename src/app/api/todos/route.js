@@ -16,64 +16,52 @@ export async function GET() {
 
       return new Response(
         JSON.stringify(data),
-        {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        }
+        { headers: { 'Content-type': 'application/json'  } }
       );
   } catch (error) {
-    // continue here
-    // actually, i think it's advisable to speedrun this section ngl
-    // learning deeply aint that helpful :VV
+    console.warn("Supabase failed. Using JSON fallback.");
+    const data = getJsonTodos();
+    return new Response(
+      JSON.stringify(data),
+      { headers: { 'Content-type': 'application/json'  } }
+    )
   }
-
-  /*
-  const todos = getJsonTodos();
-
-  return new Response(JSON.stringify(todos), {
-    headers: { 'Content-Type': 'application/json' }
-  });
-  */
 }
 
 export async function POST(request) {
-  const body = await request.json();
+  try {
+    const body = await request.json();
 
-  // call get todos function
-  const todos = getJsonTodos();
+    const { data, error } = await supabase
+      .from('todos')
+      .insert([{ title: body.title, description: body.description }])
+      .select()
+      .single()
+    
+    if (error) {
+      throw error;
+    }
+    return new Response(
+      JSON.stringify(data),
+      { status: 201, headers: { 'Content-type': 'application/json'  } }
+    )
+  } catch (error) {
+    // do stuff here
+    console.log(error);
+    const todos = getJsonTodos();
+    const newTodo = {
+      id: Date.now().toString(),
+      title: body.title,
+      description: body.description,
+      completed: false,
+      deleted: false
+    };
 
-  // create new todo object
-  const newTodo = {
-    id: Date.now().toString(),
-    title: body.title,
-    description: body.description,
-    completed: false,
-    deleted: false
-  };
+    saveJsonTodos([...todos, newTodo]);
 
-  // update todo with ellipsis and assign to variable
-  const updatedTodos = [...todos, newTodo];
-
-  // call saveTodo function (to be made)
-  if (saveJsonTodos(updatedTodos)) {
-    return new Response(JSON.stringify(newTodo), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  } else {
-    return new Response(JSON.stringify({
-      error: 'Failed to save todo...'
-    }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    return new Response(
+      JSON.stringify(data),
+      { status: 201, headers: { 'Content-type': 'application/json'  } }
+    )
   }
-  
-
-  // return a response object <-- look into how its done
 }
