@@ -6,24 +6,23 @@ export async function GET(_, { params }) {
     // continue with this
     // logic: try -> db, catch -> json fallback
     // synchronize after put and post.
-    const todos = getTodos();
-    const todoId = String(params?.id);
-    // find todo using filtering
-    const todo = todos.find(t => t.id === todoId);
-
-    // if todo not found, return a bad response object 404
-    if (!todo) {
-        return new Response(JSON.stringify({ error: "Todo not found..." }), { status: 404 })
-    }
 
     try {
         const { data, error } = await supabase
         .from('supabase-todo-list')
         .select('*')
-        .order('created_at', { ascending: false });
+        .eq('id', params?.id)
+        .single();
 
         if (error) {
             throw error;
+        }
+
+        if (!data) {
+            return new Response(
+            JSON.stringify({ error: "Todo not found..." }), 
+            { status: 404 }
+            );
         }
 
         return new Response(
@@ -32,56 +31,82 @@ export async function GET(_, { params }) {
         );
     } catch (error) {
         console.warn("Supabase failed. Using JSON fallback.");
-        const data = getJsonTodos();
+        const todos = getJsonTodos();
+        const todoId = String(params?.id);
+        // find todo using filtering
+        const todo = todos.find(t => t.id === todoId);
+
+        // if todo not found, return a bad response object 404
+        if (!todo) {
+            return new Response(JSON.stringify({ error: "Todo not found..." }), { status: 404 })
+        }
+        
         return new Response(
-        JSON.stringify(data),
-        { headers: { 'Content-type': 'application/json'  } }
-        )
+            JSON.stringify(todo),
+            { headers: { 'Content-type': 'application/json'  } }
+        );
     }
 }
 
 export async function PUT(request, { params }) {
-    // get body using await
-    const body = await request.json();
-    // get todos using getTodos()
-    const todos = getTodos();
-    // get index using findIndex with condition
-    const todoIndex = todos.findIndex(t => t.id === params?.id);
+    try {
+        const body = await request.json();
 
-    // if index == -1, return a new response object 404 todo not found
-    // fixed todoindex bug (used index instead of todoIndex)
-    if (todoIndex === -1) {
+        const { data, error } = await supabase
+            .from('supabase-todo-list')
+            .update(body)
+            .eq('id', params?.id)
+            .select()
+            .single();
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data) {
+            return new Response(
+                JSON.stringify({ error: "Todo not found..." }), 
+                { status: 404 }
+            );
+        }
+
         return new Response(
-            { error: "Todo not found..." },
-            { status: 404 }
-        );
-    }
-
-    // create an updated todo using ellipses
-    const updatedTodo = {
-        ...todos[todoIndex],
-        ...body // this part overrides any fields...
-    }
-
-    // change todo using index
-    todos[todoIndex] = updatedTodo;
-
-    // save todo store in success variable
-    const success = saveTodos(todos);
-    
-    // if not successfully saved, failed to update todo, return 500
-    if (!success) {
-        // if failed to save, failed to delete, return 500
-        return new Response(
-            { error: "Failed to update todo..." },
-            { status: 500 }
+            JSON.stringify(data),
+            { headers: { 'Content-type': 'application/json' } }
         );
 
-    } 
+    } catch (error) {
+        console.warn("Supabase failed. Using JSON fallback.");
+        // JSON fallback
+        const body = await request.json();
+        const todos = getJsonTodos();
+        const todoIndex = todos.findIndex(t => t.id === params?.id);
 
-    // otherwise, all is well, return updated todo and status 200
-    return new Response(
-        JSON.stringify(updatedTodo),
-        { status: 200 }
-    );
+        if (todoIndex === -1) {
+            return new Response(
+                JSON.stringify({ error: "Todo not found..." }),
+                { status: 404 }
+            );
+        }
+
+        const updatedTodo = {
+            ...todos[todoIndex],
+            ...body
+        };
+
+        todos[todoIndex] = updatedTodo;
+        const success = saveJsonTodos(todos);
+
+        if (!success) {
+            return new Response(
+                JSON.stringify({ error: "Failed to update todo..." }),
+                { status: 500 }
+            );
+        }
+
+        return new Response(
+            JSON.stringify(updatedTodo),
+            { headers: { 'Content-type': 'application/json' } }
+        );
+    }
 }
