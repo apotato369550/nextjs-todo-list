@@ -54,7 +54,8 @@ export async function POST(request) {
       title: body.title,
       description: body.description,
       completed: false,
-      deleted: false
+      deleted: false,
+      created_at: new Date().toISOString()
     };
 
     saveJsonTodos([...todos, newTodo]);
