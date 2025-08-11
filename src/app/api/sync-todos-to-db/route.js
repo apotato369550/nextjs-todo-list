@@ -5,7 +5,7 @@ import { getTodos as getJsonTodos, saveTodos as saveJsonTodos } from '@/lib/todo
 export async function GET() {
     try {
         const { data: dbTodos, error } = await supabase
-            .from('supabase-todo-list')
+            .from('todos')
             .select('*')
             .order('created_at', { ascending: false });
 

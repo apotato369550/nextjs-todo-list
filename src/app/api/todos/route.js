@@ -6,7 +6,7 @@ import { getTodos as getJsonTodos, saveTodos as saveJsonTodos } from '@/lib/todo
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from('supabase-todo-list')
+      .from('todos')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -29,8 +29,9 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  let body;
   try {
-    const body = await request.json();
+    body = await request.json();
 
     const { data, error } = await supabase
       .from('todos')
@@ -61,7 +62,7 @@ export async function POST(request) {
     saveJsonTodos([...todos, newTodo]);
 
     return new Response(
-      JSON.stringify(data),
+      JSON.stringify(newTodo),
       { status: 201, headers: { 'Content-type': 'application/json'  } }
     )
   }

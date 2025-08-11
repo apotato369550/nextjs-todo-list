@@ -9,7 +9,7 @@ export async function GET(_, { params }) {
 
     try {
         const { data, error } = await supabase
-        .from('supabase-todo-list')
+        .from('todos')
         .select('*')
         .eq('id', params?.id)
         .single();
@@ -53,7 +53,7 @@ export async function PUT(request, { params }) {
         const body = await request.json();
 
         const { data, error } = await supabase
-            .from('supabase-todo-list')
+            .from('todos')
             .update(body)
             .eq('id', params?.id)
             .select()
